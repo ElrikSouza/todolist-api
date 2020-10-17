@@ -1,14 +1,15 @@
 {
     "compilerOptions": {
         "target": "ES2020",
-        "module": "ES2020",
-        "outDir": "./build",
-        "rootDir": "./src",
+        "module": "commonjs",
+        "outDir": "build",
+        "rootDir": "src",
         "removeComments": true,
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "sourceMap": true
     }
 }
