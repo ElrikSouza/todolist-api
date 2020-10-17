@@ -12,7 +12,7 @@ const envSchema = Joi.object({
     ALLOWED_ORIGIN: Joi.string().hostname().required(),
     CONNECTION_STRING: Joi.string().required(),
     JWT_SECRET: Joi.string().required(),
-});
+}).unknown();
 
 const validationResult = envSchema.validate(process.env);
 
