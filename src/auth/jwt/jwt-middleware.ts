@@ -22,6 +22,11 @@ const getTokenFromRequest = (request: Request) => {
     return splittedHeader[1];
 };
 
+export const getUserIdFromRequest = (request: Request): string => {
+    const { userId } = request as AuthenticatedRequest;
+    return userId;
+};
+
 export const jwtMiddleware = async (request: Request, response: Response, next: NextFunction): Promise<void> => {
     try {
         const token = getTokenFromRequest(request);
