@@ -4,12 +4,14 @@ import Express, { json } from 'express';
 import { ALLOWED_ORIGIN } from './env';
 import { errorHandlerMiddleWare } from './http-helpers/error-handler';
 import { authenticationModule } from './auth';
+import { taskListModule } from './task-list';
 
 const app = Express();
 app.use(Helmet());
 app.use(Cors({ origin: ALLOWED_ORIGIN }));
 app.use(json());
 app.use(authenticationModule);
+app.use(taskListModule);
 app.use(errorHandlerMiddleWare);
 
 export { app };
