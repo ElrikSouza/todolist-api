@@ -23,4 +23,9 @@ export class TaskDbSerivce implements TaskRepository {
         const result = await this.conn<Task>(TABLE_NAME).select('user_id').where('id', taskId).first();
         return result?.user_id;
     };
+
+    public getOne = async (taskId: string): Promise<Task> => {
+        const [result] = await this.conn<Task>(TABLE_NAME).select('*').where('id', taskId);
+        return result;
+    };
 }

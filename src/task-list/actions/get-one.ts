@@ -27,7 +27,7 @@ export class GetOneTaskListAction implements Action<GetOneTaskListResult> {
         }
 
         if (ownerId !== userId) {
-            throw new AuthorizationError('This user does not have permission to rename this task list');
+            throw new AuthorizationError('This user does not have permission to get this task list');
         }
 
         const taskList = await this.taskListRepo.getOne(taskListId);
