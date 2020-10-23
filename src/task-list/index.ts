@@ -9,13 +9,15 @@ import { RenameTaskList } from './actions/rename-tasklist';
 import { DbTaskListService } from './db-task-list-service';
 import { taskSubmodule } from './task';
 import { TaskListController } from './task-list-controller';
+import { TaskListPermissionService } from './task-list-permissions';
 
 const taskListRepo = new DbTaskListService(db);
+const taskListPermissionService = new TaskListPermissionService(taskListRepo.getUserId);
 const taskListController = new TaskListController(
     new CreateTaskList(taskListRepo),
-    new RenameTaskList(taskListRepo),
-    new DeleteTaskList(taskListRepo),
-    new GetOneTaskListAction(taskListRepo),
+    new RenameTaskList(taskListRepo, taskListPermissionService),
+    new DeleteTaskList(taskListRepo, taskListPermissionService),
+    new GetOneTaskListAction(taskListRepo, taskListPermissionService),
     new GetAllTaskListsAction(taskListRepo),
 );
 

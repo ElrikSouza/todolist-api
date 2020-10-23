@@ -1,6 +1,5 @@
 import { Action } from '../../action';
-import { AuthorizationError } from '../../error/authorization-error';
-import { ResourceNotFound } from '../../error/resource-not-found';
+import { PermissionService } from '../../permission-service';
 import { validateId } from '../../validation/validate-id';
 import { TaskList } from '../task-list';
 import { TaskListRepository } from '../tasklist-repository';
@@ -11,24 +10,18 @@ export interface GetOneTaskListResult {
 
 export class GetOneTaskListAction implements Action<GetOneTaskListResult> {
     private taskListRepo: TaskListRepository;
+    private taskListPermissions: PermissionService;
 
-    constructor(taskListRepo: TaskListRepository) {
+    constructor(taskListRepo: TaskListRepository, taskListPermissions: PermissionService) {
         this.taskListRepo = taskListRepo;
+        this.taskListPermissions = taskListPermissions;
     }
 
     public run = async (taskListId: string, userId: string): Promise<GetOneTaskListResult> => {
         validateId(taskListId);
         validateId(userId);
 
-        const ownerId = await this.taskListRepo.getUserId(taskListId);
-
-        if (ownerId == null) {
-            throw new ResourceNotFound('The requested task list does not exist');
-        }
-
-        if (ownerId !== userId) {
-            throw new AuthorizationError('This user does not have permission to get this task list');
-        }
+        await this.taskListPermissions.assertUserHasPermission(taskListId, userId);
 
         const taskList = await this.taskListRepo.getOne(taskListId);
 

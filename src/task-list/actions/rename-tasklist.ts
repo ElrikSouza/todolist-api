@@ -1,6 +1,5 @@
 import { Action } from '../../action';
-import { AuthorizationError } from '../../error/authorization-error';
-import { ResourceNotFound } from '../../error/resource-not-found';
+import { PermissionService } from '../../permission-service';
 import { TaskList, TaskListInput, validateTaskListInput } from '../task-list';
 import { TaskListRepository } from '../tasklist-repository';
 
@@ -10,22 +9,17 @@ export interface RenameTaskListResult {
 
 export class RenameTaskList implements Action<RenameTaskListResult> {
     private taskListRepository: TaskListRepository;
+    private taskListPermissions: PermissionService;
 
-    constructor(taskListRepository: TaskListRepository) {
+    constructor(taskListRepository: TaskListRepository, taskListPermissions: PermissionService) {
         this.taskListRepository = taskListRepository;
+        this.taskListPermissions = taskListPermissions;
     }
 
     public run = async (taskListInput: TaskListInput): Promise<RenameTaskListResult> => {
         validateTaskListInput(taskListInput);
-        const ownerId = await this.taskListRepository.getUserId(taskListInput.id);
 
-        if (ownerId == null) {
-            throw new ResourceNotFound('The requested task list does not exist');
-        }
-
-        if (ownerId !== taskListInput.user_id) {
-            throw new AuthorizationError('This user does not have permission to rename this task list');
-        }
+        await this.taskListPermissions.assertUserHasPermission(taskListInput.id, taskListInput.user_id);
 
         const taskList = await this.taskListRepository.rename(taskListInput.name, taskListInput.id);
         return { taskList };
