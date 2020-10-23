@@ -9,10 +9,10 @@ import { RenameTaskList } from './actions/rename-tasklist';
 import { DbTaskListService } from './db-task-list-service';
 import { taskSubmodule } from './task';
 import { TaskListController } from './task-list-controller';
-import { TaskListPermissionService } from './task-list-permissions';
+import { ApiResourcePermissionService } from '../permissions/api-resource-permissions';
 
 const taskListRepo = new DbTaskListService(db);
-const taskListPermissionService = new TaskListPermissionService(taskListRepo.getUserId);
+const taskListPermissionService = new ApiResourcePermissionService(taskListRepo.getUserId, 'task list');
 const taskListController = new TaskListController(
     new CreateTaskList(taskListRepo),
     new RenameTaskList(taskListRepo, taskListPermissionService),
@@ -28,4 +28,4 @@ export const taskListModule = Router()
     .get('/tasklists', taskListController.getAllTaskLists)
     .put('/tasklists/:id', taskListController.renameTaskList)
     .delete('/tasklists/:id', taskListController.deleteTaskList)
-    .use(taskSubmodule(taskListRepo));
+    .use(taskSubmodule(taskListPermissionService));

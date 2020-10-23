@@ -1,8 +1,6 @@
 import { v4 } from 'uuid';
 import { Action } from '../../../action';
-import { AuthorizationError } from '../../../error/authorization-error';
-import { ResourceNotFound } from '../../../error/resource-not-found';
-import { TaskListRepository } from '../../tasklist-repository';
+import { PermissionService } from '../../../permissions/permission-service';
 import { Task, TaskInput, validateTaskInput } from '../task';
 import { TaskRepository } from '../task-repository';
 
@@ -12,24 +10,17 @@ export interface CreateTaskActionResult {
 
 export class CreateTaskAction implements Action<CreateTaskActionResult> {
     private taskRepo: TaskRepository;
-    private taskListRepo: TaskListRepository;
+    private taskListPermissions: PermissionService;
 
-    constructor(taskRepo: TaskRepository, taskListRepo: TaskListRepository) {
+    constructor(taskRepo: TaskRepository, taskListPermissions: PermissionService) {
         this.taskRepo = taskRepo;
-        this.taskListRepo = taskListRepo;
+        this.taskListPermissions = taskListPermissions;
     }
 
     public run = async (taskInput: TaskInput): Promise<CreateTaskActionResult> => {
         validateTaskInput(taskInput);
-        const taskListOwnerId = await this.taskListRepo.getUserId(taskInput.task_list_id);
 
-        if (taskListOwnerId == undefined) {
-            throw new ResourceNotFound('Requested task list does not exist');
-        }
-
-        if (taskListOwnerId != taskInput.user_id) {
-            throw new AuthorizationError('The current user does not have permission to add tasks to this task list');
-        }
+        await this.taskListPermissions.assertUserHasPermission(taskInput.task_list_id, taskInput.user_id);
 
         const task = await this.taskRepo.add({ ...taskInput, id: v4() });
         return { task };
