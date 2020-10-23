@@ -1,5 +1,5 @@
 import { Action } from '../../action';
-import { PermissionService } from '../../permission-service';
+import { PermissionService } from '../../permissions/permission-service';
 import { validateId } from '../../validation/validate-id';
 import { TaskListRepository } from '../tasklist-repository';
 
