@@ -20,6 +20,10 @@ export interface Task {
 }
 
 export type TaskInput = Exclude<Task, 'created_at' | 'progress'>;
+export interface TaskUpdate extends Partial<Exclude<Task, 'task_list_id'>> {
+    id: string;
+    user_id: string;
+}
 const taskInputSchema = Joi.object({
     user_id: idSchema,
     task_list_id: idSchema,
@@ -28,4 +32,13 @@ const taskInputSchema = Joi.object({
     scheduled_to: Joi.date(),
 });
 
+const taskUpdateSchema = Joi.object({
+    id: idSchema,
+    user_id: idSchema,
+    name: Joi.string(),
+    description: Joi.string().max(255),
+    scheduled_to: Joi.date(),
+});
+
 export const validateTaskInput = createValidatorFromSchema(taskInputSchema);
+export const validateTaskUpdate = createValidatorFromSchema(taskUpdateSchema);

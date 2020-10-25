@@ -7,6 +7,7 @@ import { GetOneTaskAction } from './actions/get-one';
 import { RemoveTaskAction } from './actions/remove-task';
 import { TaskController } from './task-controller';
 import { TaskDbSerivce } from './task-db-service';
+import { EditTaskAction } from './actions/edit-task';
 
 export const taskSubmodule = (taskListPermissions: PermissionService): Router => {
     const taskRepository = new TaskDbSerivce(db);
@@ -15,10 +16,12 @@ export const taskSubmodule = (taskListPermissions: PermissionService): Router =>
         new CreateTaskAction(taskRepository, taskListPermissions),
         new RemoveTaskAction(taskRepository, taskPermissions),
         new GetOneTaskAction(taskRepository, taskPermissions),
+        new EditTaskAction(taskRepository, taskPermissions),
     );
 
     return Router()
         .post('/tasklists/:id', taskController.createTask)
         .delete('/tasks/:id', taskController.removeTask)
+        .patch('/tasks/:id', taskController.updateTask)
         .get('/tasks/:id', taskController.getOneTask);
 };

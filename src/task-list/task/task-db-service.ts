@@ -1,5 +1,5 @@
 import Knex from 'knex';
-import { Task, TaskInput } from './task';
+import { Task, TaskInput, TaskUpdate } from './task';
 import { TaskRepository } from './task-repository';
 
 const TABLE_NAME = 'tasks';
@@ -26,6 +26,16 @@ export class TaskDbSerivce implements TaskRepository {
 
     public getOne = async (taskId: string): Promise<Task> => {
         const [result] = await this.conn<Task>(TABLE_NAME).select('*').where('id', taskId);
+        return result;
+    };
+
+    public update = async (taskUpdate: TaskUpdate): Promise<Task> => {
+        const [result] = await this.conn<Task>(TABLE_NAME)
+            .where('id', taskUpdate.id)
+            .update(taskUpdate)
+            .returning('*')
+            .limit(1);
+
         return result;
     };
 }
