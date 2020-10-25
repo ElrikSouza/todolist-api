@@ -23,9 +23,9 @@ const taskListController = new TaskListController(
 
 export const taskListModule = Router()
     .use(jwtMiddleware)
-    .post('/tasklists', taskListController.createTaskList)
-    .get('/tasklists/:id', taskListController.getOneTaskList)
-    .get('/tasklists', taskListController.getAllTaskLists)
-    .put('/tasklists/:id', taskListController.renameTaskList)
-    .delete('/tasklists/:id', taskListController.deleteTaskList)
+    .post('/task-lists', taskListController.createTaskList)
+    .get('/task-lists/:id', taskListController.getOneTaskList)
+    .get('/task-lists', taskListController.getAllTaskLists)
+    .put('/task-lists/:id', taskListController.renameTaskList)
+    .delete('/task-lists/:id', taskListController.deleteTaskList)
     .use(taskSubmodule(taskListPermissionService));

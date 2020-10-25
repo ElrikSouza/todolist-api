@@ -20,7 +20,7 @@ export const taskSubmodule = (taskListPermissions: PermissionService): Router =>
     );
 
     return Router()
-        .post('/tasklists/:id', taskController.createTask)
+        .post('/task-lists/:id', taskController.createTask)
         .delete('/tasks/:id', taskController.removeTask)
         .patch('/tasks/:id', taskController.updateTask)
         .get('/tasks/:id', taskController.getOneTask);
