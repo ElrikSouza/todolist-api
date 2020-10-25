@@ -1,13 +1,13 @@
 import { Action } from '../../action';
 import { validateId } from '../../validation/validate-id';
 import { TaskList } from '../task-list';
-import { TaskListRepository } from '../tasklist-repository';
+import { TaskListRepository } from '../task-list-repository';
 
 export interface GetAllTaskListsResult {
     taskLists: TaskList[];
 }
 
-export class GetAllTaskListsAction implements Action<GetAllTaskListsResult> {
+export class GetAllTaskLists implements Action<GetAllTaskListsResult> {
     private taskListRepo: TaskListRepository;
 
     constructor(taskListRepo: TaskListRepository) {

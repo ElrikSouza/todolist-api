@@ -10,18 +10,18 @@ export class TaskController {
     private createTaskAction: Action<CreateTaskActionResult>;
     private removeTaskAction: Action<RemoveTaskResult>;
     private getOneTaskAction: Action<GetOneTaskResult>;
-    private updateTaskAction: Action<EditTaskResult>;
+    private editTaskAction: Action<EditTaskResult>;
 
     constructor(
         createTaskAction: Action<CreateTaskActionResult>,
         removeTaskAction: Action<RemoveTaskResult>,
         getOneTaskAction: Action<GetOneTaskResult>,
-        updateTaskAction: Action<EditTaskResult>,
+        editTaskAction: Action<EditTaskResult>,
     ) {
         this.createTaskAction = createTaskAction;
         this.removeTaskAction = removeTaskAction;
         this.getOneTaskAction = getOneTaskAction;
-        this.updateTaskAction = updateTaskAction;
+        this.editTaskAction = editTaskAction;
     }
 
     public createTask = wrapWithErrorHandling(async (request, response) => {
@@ -48,11 +48,11 @@ export class TaskController {
         return response.status(200).json(result);
     });
 
-    public updateTask = wrapWithErrorHandling(async (request, response) => {
+    public editTask = wrapWithErrorHandling(async (request, response) => {
         const id = request.params.id;
         const user_id = getUserIdFromRequest(request);
 
-        const result = await this.updateTaskAction.run({ ...request.body, id, user_id });
+        const result = await this.editTaskAction.run({ ...request.body, id, user_id });
         return response.status(200).json(result);
     });
 }

@@ -1,19 +1,19 @@
 import { Action } from '../action';
 import { wrapWithErrorHandling } from '../http-helpers/error-handler';
-import { CreateUserResult } from './actions/create-user';
+import { SignUpResult } from './actions/create-user';
 import { LogInResult } from './actions/log-in';
 
 export class AuthController {
-    private createUserAction: Action<CreateUserResult>;
+    private signUpAction: Action<SignUpResult>;
     private logInAction: Action<LogInResult>;
 
-    constructor(createUserAction: Action<CreateUserResult>, logInAction: Action<LogInResult>) {
-        this.createUserAction = createUserAction;
+    constructor(createUserAction: Action<SignUpResult>, logInAction: Action<LogInResult>) {
+        this.signUpAction = createUserAction;
         this.logInAction = logInAction;
     }
 
-    public createUser = wrapWithErrorHandling(async (request, response) => {
-        const result = await this.createUserAction.run(request.body);
+    public signUp = wrapWithErrorHandling(async (request, response) => {
+        const result = await this.signUpAction.run(request.body);
         return response.status(201).json(result);
     });
 

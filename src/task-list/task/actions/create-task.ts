@@ -1,14 +1,15 @@
 import { v4 } from 'uuid';
 import { Action } from '../../../action';
 import { PermissionService } from '../../../permissions/permission-service';
-import { Task, TaskInput, validateTaskInput } from '../task';
+import { Task, TaskInput } from '../task';
+import { validateTaskInput } from '../task-validation';
 import { TaskRepository } from '../task-repository';
 
 export interface CreateTaskActionResult {
     task: Task;
 }
 
-export class CreateTaskAction implements Action<CreateTaskActionResult> {
+export class CreateTask implements Action<CreateTaskActionResult> {
     private taskRepo: TaskRepository;
     private taskListPermissions: PermissionService;
 

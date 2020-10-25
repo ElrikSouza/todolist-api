@@ -7,7 +7,7 @@ export interface RemoveTaskResult {
     msg: 'The requested task has been deleted';
 }
 
-export class RemoveTaskAction implements Action<RemoveTaskResult> {
+export class RemoveTask implements Action<RemoveTaskResult> {
     private taskRepo: TaskRepository;
     private taskPermissions: PermissionService;
 

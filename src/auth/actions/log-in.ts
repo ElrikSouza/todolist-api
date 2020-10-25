@@ -1,7 +1,7 @@
 import { Action } from '../../action';
 import { AuthenticationError } from '../../error/authentication-error';
 import { ResourceNotFound } from '../../error/resource-not-found';
-import { doPasswordsMatch } from '../hashing';
+import { verifyPassword } from '../hashing';
 import { createToken } from '../jwt/token';
 import { UserLogInInfo } from '../user';
 import { UserRepository } from '../user-repository';
@@ -26,7 +26,7 @@ export class LogIn implements Action<LogInResult> {
             throw new ResourceNotFound('Requested user does not exist');
         }
 
-        const isPasswordCorrect = await doPasswordsMatch(user.password, storedUser.password);
+        const isPasswordCorrect = await verifyPassword(user.password, storedUser.password);
         if (!isPasswordCorrect) {
             throw new AuthenticationError('Wrong password');
         }

@@ -6,18 +6,18 @@ import { UserSignUpInfo } from '../user';
 import { UserRepository } from '../user-repository';
 import { validateUserSignUpInfo } from '../validate-user';
 
-export interface CreateUserResult {
+export interface SignUpResult {
     msg: string;
 }
 
-export class CreateUser implements Action<CreateUserResult> {
+export class SignUp implements Action<SignUpResult> {
     private userRepository: UserRepository;
 
     constructor(userRepo: UserRepository) {
         this.userRepository = userRepo;
     }
 
-    run = async (user: UserSignUpInfo): Promise<CreateUserResult> => {
+    run = async (user: UserSignUpInfo): Promise<SignUpResult> => {
         validateUserSignUpInfo(user);
 
         const emailAlreadyTaken = await this.userRepository.isEmailAlreadyUsed(user.email);

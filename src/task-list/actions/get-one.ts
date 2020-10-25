@@ -2,13 +2,13 @@ import { Action } from '../../action';
 import { PermissionService } from '../../permissions/permission-service';
 import { validateId } from '../../validation/validate-id';
 import { TaskList } from '../task-list';
-import { TaskListRepository } from '../tasklist-repository';
+import { TaskListRepository } from '../task-list-repository';
 
 export interface GetOneTaskListResult {
     taskList: TaskList;
 }
 
-export class GetOneTaskListAction implements Action<GetOneTaskListResult> {
+export class GetOneTaskList implements Action<GetOneTaskListResult> {
     private taskListRepo: TaskListRepository;
     private taskListPermissions: PermissionService;
 

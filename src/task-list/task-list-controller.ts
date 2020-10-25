@@ -1,12 +1,11 @@
-import { Request, Response } from 'express';
 import { Action } from '../action';
-import { AuthenticatedRequest } from '../auth/jwt/jwt-middleware';
+import { getUserIdFromRequest } from '../auth/jwt/jwt-middleware';
 import { wrapWithErrorHandling } from '../http-helpers/error-handler';
-import { CreateTaskListResult } from './actions/create-tasklist';
-import { DeleteTaskListResult } from './actions/delete-tasklist';
+import { CreateTaskListResult } from './actions/create-task-list';
+import { DeleteTaskListResult } from './actions/delete-task-list';
 import { GetAllTaskListsResult } from './actions/get-all';
 import { GetOneTaskListResult } from './actions/get-one';
-import { RenameTaskListResult } from './actions/rename-tasklist';
+import { RenameTaskListResult } from './actions/rename-task-list';
 
 export class TaskListController {
     private renameTaskListAction: Action<RenameTaskListResult>;
@@ -29,39 +28,39 @@ export class TaskListController {
         this.getAllTaskListsAction = getAll;
     }
 
-    public createTaskList = wrapWithErrorHandling(async (request: Request, response: Response) => {
-        const { userId } = request as AuthenticatedRequest;
+    public createTaskList = wrapWithErrorHandling(async (request, response) => {
+        const userId = getUserIdFromRequest(request);
 
         const result = await this.createTaskListAction.run({ ...request.body, user_id: userId });
         return response.status(201).json(result);
     });
 
-    public renameTaskList = wrapWithErrorHandling(async (request: Request, response: Response) => {
-        const { userId } = request as AuthenticatedRequest;
+    public renameTaskList = wrapWithErrorHandling(async (request, response) => {
         const { id } = request.params;
+        const userId = getUserIdFromRequest(request);
 
         const result = await this.renameTaskListAction.run({ ...request.body, user_id: userId, id });
         return response.status(200).json(result);
     });
 
-    public deleteTaskList = wrapWithErrorHandling(async (request: Request, response: Response) => {
-        const { userId } = request as AuthenticatedRequest;
+    public deleteTaskList = wrapWithErrorHandling(async (request, response) => {
         const { id } = request.params;
+        const userId = getUserIdFromRequest(request);
 
         const result = await this.removeTaskListAction.run(id, userId);
         return response.status(200).json(result);
     });
 
-    public getOneTaskList = wrapWithErrorHandling(async (request: Request, response: Response) => {
-        const { userId } = request as AuthenticatedRequest;
+    public getOneTaskList = wrapWithErrorHandling(async (request, response) => {
         const { id } = request.params;
+        const userId = getUserIdFromRequest(request);
 
         const result = await this.getOneTaskListAction.run(id, userId);
         return response.status(200).json(result);
     });
 
-    public getAllTaskLists = wrapWithErrorHandling(async (request: Request, response: Response) => {
-        const { userId } = request as AuthenticatedRequest;
+    public getAllTaskLists = wrapWithErrorHandling(async (request, response) => {
+        const userId = getUserIdFromRequest(request);
 
         const result = await this.getAllTaskListsAction.run(userId);
         return response.status(200).json(result);

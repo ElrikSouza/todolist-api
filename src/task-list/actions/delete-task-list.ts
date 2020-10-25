@@ -1,7 +1,7 @@
 import { Action } from '../../action';
 import { PermissionService } from '../../permissions/permission-service';
 import { validateId } from '../../validation/validate-id';
-import { TaskListRepository } from '../tasklist-repository';
+import { TaskListRepository } from '../task-list-repository';
 
 export interface DeleteTaskListResult {
     msg: 'This task list has been deleted';

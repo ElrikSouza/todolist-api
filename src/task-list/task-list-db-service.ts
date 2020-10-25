@@ -1,9 +1,9 @@
 import Knex from 'knex';
 import { TaskList, TaskListInput } from './task-list';
-import { TaskListRepository } from './tasklist-repository';
+import { TaskListRepository } from './task-list-repository';
 
 const TABLE_NAME = 'task_lists';
-export class DbTaskListService implements TaskListRepository {
+export class TaskListDbService implements TaskListRepository {
     private conn: Knex;
 
     constructor(conn: Knex) {

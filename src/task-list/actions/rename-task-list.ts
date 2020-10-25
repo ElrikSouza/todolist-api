@@ -1,7 +1,8 @@
 import { Action } from '../../action';
 import { PermissionService } from '../../permissions/permission-service';
-import { TaskList, TaskListInput, validateTaskListInput } from '../task-list';
-import { TaskListRepository } from '../tasklist-repository';
+import { TaskList, TaskListInput } from '../task-list';
+import { validateTaskListInput } from '../task-list-validation';
+import { TaskListRepository } from '../task-list-repository';
 
 export interface RenameTaskListResult {
     taskList: TaskList;

@@ -2,26 +2,26 @@ import { Router } from 'express';
 import { db } from '../../db';
 import { PermissionService } from '../../permissions/permission-service';
 import { ApiResourcePermissionService } from '../../permissions/api-resource-permissions';
-import { CreateTaskAction } from './actions/create-task';
-import { GetOneTaskAction } from './actions/get-one';
-import { RemoveTaskAction } from './actions/remove-task';
+import { CreateTask } from './actions/create-task';
+import { GetOneTask } from './actions/get-one';
+import { RemoveTask } from './actions/remove-task';
 import { TaskController } from './task-controller';
 import { TaskDbSerivce } from './task-db-service';
-import { EditTaskAction } from './actions/edit-task';
+import { EditTask } from './actions/edit-task';
 
 export const taskSubmodule = (taskListPermissions: PermissionService): Router => {
     const taskRepository = new TaskDbSerivce(db);
     const taskPermissions = new ApiResourcePermissionService(taskRepository.getUserId, 'task');
     const taskController = new TaskController(
-        new CreateTaskAction(taskRepository, taskListPermissions),
-        new RemoveTaskAction(taskRepository, taskPermissions),
-        new GetOneTaskAction(taskRepository, taskPermissions),
-        new EditTaskAction(taskRepository, taskPermissions),
+        new CreateTask(taskRepository, taskListPermissions),
+        new RemoveTask(taskRepository, taskPermissions),
+        new GetOneTask(taskRepository, taskPermissions),
+        new EditTask(taskRepository, taskPermissions),
     );
 
     return Router()
         .post('/task-lists/:id', taskController.createTask)
         .delete('/tasks/:id', taskController.removeTask)
-        .patch('/tasks/:id', taskController.updateTask)
+        .patch('/tasks/:id', taskController.editTask)
         .get('/tasks/:id', taskController.getOneTask);
 };

@@ -2,7 +2,7 @@ import Knex from 'knex';
 import { User } from './user';
 import { UserRepository } from './user-repository';
 
-export class DbUserSerivce implements UserRepository {
+export class UserDbService implements UserRepository {
     private conn: Knex;
 
     constructor(conn: Knex) {

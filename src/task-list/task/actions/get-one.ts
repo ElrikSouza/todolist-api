@@ -8,7 +8,7 @@ export interface GetOneTaskResult {
     task: Task;
 }
 
-export class GetOneTaskAction implements Action<GetOneTaskResult> {
+export class GetOneTask implements Action<GetOneTaskResult> {
     private taskRepo: TaskRepository;
     private taskPermissions: PermissionService;
 

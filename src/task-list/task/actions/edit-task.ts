@@ -1,13 +1,14 @@
 import { Action } from '../../../action';
 import { PermissionService } from '../../../permissions/permission-service';
-import { Task, TaskUpdate, validateTaskUpdate } from '../task';
+import { Task, TaskUpdate } from '../task';
+import { validateTaskUpdate } from '../task-validation';
 import { TaskRepository } from '../task-repository';
 
 export interface EditTaskResult {
     task: Task;
 }
 
-export class EditTaskAction implements Action<EditTaskResult> {
+export class EditTask implements Action<EditTaskResult> {
     private taskRepo: TaskRepository;
     private taskPermissions: PermissionService;
 
