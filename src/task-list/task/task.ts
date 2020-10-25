@@ -38,6 +38,7 @@ const taskUpdateSchema = Joi.object({
     name: Joi.string(),
     description: Joi.string().max(255),
     scheduled_to: Joi.date(),
+    progress: Joi.number().valid(0, 1, 2),
 });
 
 export const validateTaskInput = createValidatorFromSchema(taskInputSchema);
